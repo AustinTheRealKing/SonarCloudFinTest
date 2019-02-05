@@ -40,8 +40,15 @@ func (board C4Board) MakeMove(col Move) Board {
 // All of the current legal moves.
 // Remember, a move is just the column you can play.
 func (board C4Board) LegalMoves() []Move {
-	// YOUR CODE HERE
+	tempMove := []Move{}
+	for i := 0; i < len(board.colCount); i++{
+		if board.colCount[i] < numRows{
+			tempMove= append(tempMove, Move(i))
+		}
+	}
+	return tempMove
 }
+
 
 // Is it a win?
 func (board C4Board) IsWin() bool {
