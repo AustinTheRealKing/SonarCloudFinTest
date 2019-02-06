@@ -126,11 +126,15 @@ func (board C4Board) Evaluate(player Piece) float32 {
 // This will be used in play.go to print out the state of the position
 // to the user
 func (board C4Board) String() string {
+	finalString := ""
 	for i := 5; i >= 0; i--{
-		fmt.Print("| ")
+		finalString += "| "
 		for j := 0; j < 7; j++{
-			fmt.Print(board.position[uint(j)][uint(i)], " | ")
+			finalString = finalString + board.position[uint(j)][uint(i)].String() +  " | "
 		}
-		fmt.Println()
+		finalString += "\n"
 	}
+
+	finalString += "\n\n\n"
+	return finalString
 }
