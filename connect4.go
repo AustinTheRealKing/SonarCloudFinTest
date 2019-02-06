@@ -92,7 +92,16 @@ func (board C4Board) IsWin() bool {
 
 // Is it a draw?
 func (board C4Board) IsDraw() bool {
-	// YOUR CODE HERE
+	for i := 0;i < len(board.colCount) ; i++{
+		if board.colCount[i] != 6 {
+			return false
+		}
+	}
+	if board.IsWin() {
+		return false
+	}else{
+		return true
+	}
 }
 
 // Who is winning in this position?
