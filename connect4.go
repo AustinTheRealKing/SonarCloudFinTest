@@ -52,7 +52,42 @@ func (board C4Board) LegalMoves() []Move {
 
 // Is it a win?
 func (board C4Board) IsWin() bool {
-	// YOUR CODE HERE
+	for i := 0; i < 6; i++{
+		for j := 0; j < 7; j++{
+				if i + 1 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 1)]{
+					if i + 2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 2)]{
+						if i + 3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 3)]{
+							return true
+						}
+					}
+				}
+				if j + 1 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j + 1)][uint(i)]{
+					if j + 2 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j + 2)][uint(i)]{
+						if j + 3 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j + 3)][uint(i)]{
+							return true
+						}
+					}
+				}
+				if j + 1 < 7 && i - 1 > 0 && board.position[uint(j)][uint(i)] == board.position[uint(j + 1)][uint(i - 1)]{
+					if j + 2 < 7 && i - 2 > 0 && board.position[uint(j)][uint(i)] == board.position[uint(j + 2)][uint(i - 2)]{
+						if j + 3 < 7 && i - 3 > 0 && board.position[uint(j)][uint(i)] == board.position[uint(j + 3)][uint(i - 3)]{
+							return true
+						}
+					}
+				}
+				if j - 1 >= 0 && i - 1 >= 0 && board.position[uint(j)][uint(i)] == board.position[uint(j - 1)][uint(i - 1)]{
+					fmt.Print(board.position[uint(j - 1)][uint(i - 1)], "j", j-1, "i", i-1)
+					if j - 2 >= 0 && i - 2 >= 0 && board.position[uint(j)][uint(i)] == board.position[uint(j - 2)][uint(i - 2)]{
+						fmt.Print(board.position[uint(j - 2)][uint(i - 2)], "j", j-1, "i", i-1)
+						if j - 3 >= 0 && i - 3 >= 0 && board.position[uint(j)][uint(i)] == board.position[uint(j - 3)][uint(i - 3)]{
+							fmt.Print(board.position[uint(j - 3)][uint(i - 3)], "j", j-1, "i", i-1)
+							return true
+						}
+					}
+				}
+			}
+	}
+	return false
 }
 
 // Is it a draw?
@@ -82,5 +117,11 @@ func (board C4Board) Evaluate(player Piece) float32 {
 // This will be used in play.go to print out the state of the position
 // to the user
 func (board C4Board) String() string {
-	// YOUR CODE HERE
+	for i := 5; i >= 0; i--{
+		fmt.Print("| ")
+		for j := 0; j < 7; j++{
+			fmt.Print(board.position[uint(j)][uint(i)], " | ")
+		}
+		fmt.Println()
+	}
 }
