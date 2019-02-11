@@ -119,7 +119,63 @@ func (board C4Board) IsDraw() bool {
 // for the opponent) as very low scores
 func (board C4Board) Evaluate(player Piece) float32 {
 	// YOUR CODE HERE
+
+	//LOGIC FOR EVALUATE
+	/*
+	1 Filled = 5
+	2 Filled = 10
+	3 Filled = 25
+	4 Filled = 1000
+
+	So we need to find a way to evalute the entire board for a player, and add up a score to evaluate the entire board
+
+	Problems we need to look out for:
+	Counting the same segment twice
+	Starting on the left side of the board and just moving right
+
+	How do we check for moves in the vacinity
+	Idea: Have a function called check Vacinity to see the pieces around a given piece, will only move to the right and up/down
+
+	PROTOTYPE:
+	int score = 0
+	for int i = 0-4
+		int lengthOfConnection = 1
+			if(0)
+				Checks a piece for horizontal matches
+				if(Player1Piece == SpaceToRight)
+					lengthOfConnection++
+					if(Player1Piece == PieceTwoSpotsToRight
+					length of Connection++
+					if(Player1Piece == PieceThreeSpotsToRight
+					lengthOfConnection
+
+			if 1
+				Checks for vertical matches
+				For vertical check above and below and add them together
+			if 2
+				Checks for Upward Diagonal
+			if 3
+				Checks for Downwards Diagonal
+
+	return score
+
+	 */
 }
+/*
+function return score(takes in the length of the connection and is a returns the number
+SWITCH
+
+If length == 1
+	return 5
+if length == 2
+	return 10
+if length == 3
+	return 25
+if length == 4
+	return 1000
+default case is 0
+
+ */
 
 // Nice to print board representation
 // This will be used in play.go to print out the state of the position
