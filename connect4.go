@@ -34,7 +34,9 @@ func (board C4Board) Turn() Piece {
 // Returns a copy of the board with the move made.
 // Does not check if the column is full (assumes legal move).
 func (board C4Board) MakeMove(col Move) Board {
-	// YOUR CODE HERE
+	var temp C4Board = board
+	temp.colCount[col] += 1
+	return temp
 }
 
 // All of the current legal moves.
@@ -76,11 +78,8 @@ func (board C4Board) IsWin() bool {
 					}
 				}
 				if j - 1 >= 0 && i - 1 >= 0 && board.position[uint(j)][uint(i)] == board.position[uint(j - 1)][uint(i - 1)]{
-					fmt.Print(board.position[uint(j - 1)][uint(i - 1)], "j", j-1, "i", i-1)
 					if j - 2 >= 0 && i - 2 >= 0 && board.position[uint(j)][uint(i)] == board.position[uint(j - 2)][uint(i - 2)]{
-						fmt.Print(board.position[uint(j - 2)][uint(i - 2)], "j", j-1, "i", i-1)
 						if j - 3 >= 0 && i - 3 >= 0 && board.position[uint(j)][uint(i)] == board.position[uint(j - 3)][uint(i - 3)]{
-							fmt.Print(board.position[uint(j - 3)][uint(i - 3)], "j", j-1, "i", i-1)
 							return true
 						}
 					}
