@@ -120,75 +120,118 @@ func (board C4Board) IsDraw() bool {
 // for the opponent) as very low scores
 func (board C4Board) Evaluate(player Piece) float32 {
 	var array [7][6]int
-	score := 0
+	finalScore := 0
+	opScore := 0
 	for i := 0; i < 6; i++ {
 		for j := 0; j < 7; j++{
-			if board.position[uint(j)][uint(i)].String() == "+" && array[j][i] != 1 {
+			if board.position[uint(j)][uint(i)].String() != " " {
+				//evaluate horizontal
 				if j + 1 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j + 1)][uint(i)] && array[j + 1][i] != 1 {
 					array[j+1][i] = 1
 					array[j][i] = 1
-					score += 10
+					if board.position[uint(j)][uint(i)] == player {
+						finalScore += 10
+					}else {
+						opScore -= 10
+					}
 					if j + 2 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j + 2)][uint(i)] && array[j + 2][i] != 1 {
 						array[j+2][i] = 1
-						score += 5
+						if board.position[uint(j)][uint(i)] == player {
+							finalScore += 150
+						}else {
+							opScore -= 150
+						}
 						if j + 3 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j + 3)][uint(i)] && array[j + 3][i] != 1{
 							array[j+3][i] = 1
-							score += 1000
+							if board.position[uint(j)][uint(i)] == player {
+								finalScore += 10000
+							}else {
+								opScore -= 10000
+							}
 						}
 					}
 				}
-			}
-
-			if board.position[uint(j)][uint(i)].String() == "+" && array[j][i] != 2 {
 				if i + 1 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 1)] && array[j][i + 1] != 2 {
 					array[j][i] = 2
 					array[j][i+1] = 2
-					score += 10
+					if board.position[uint(j)][uint(i)] == player {
+						finalScore += 10
+					}else {
+						opScore -= 10
+					}
 					if i + 2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 2)] && array[j][i + 2] != 2 {
 						array[j][i + 2] = 2
-						score += 5
+						if board.position[uint(j)][uint(i)] == player {
+							finalScore += 150
+						}else {
+							opScore -= 150
+						}
 						if i + 3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 3)] && array[j][i + 3] != 2{
 							array[j][i + 3] = 2
-							score += 1000
+							if board.position[uint(j)][uint(i)] == player {
+								finalScore += 10000
+							}else {
+								opScore -= 10000
+							}
 						}
 					}
 				}
-			}
 
-			if board.position[uint(j)][uint(i)].String() == "+" && array[j][i] != 3 {
 				if j + 1 < 7 && i + 1 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j + 1)][uint(i + 1)] && array[j + 1][i + 1] != 3{
 					array[j][i] = 3
 					array[j + 1][i + 1] = 3
-					score += 10
+					if board.position[uint(j)][uint(i)] == player {
+						finalScore += 10
+					}else {
+						opScore -= 10
+					}
 					if j + 2 < 7 && i + 2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j + 2)][uint(i + 2)] && array[j + 2][i + 2] != 3{
 						array[j + 2][i + 2] = 3
-						score += 5
+						if board.position[uint(j)][uint(i)] == player {
+							finalScore += 150
+						}else {
+							opScore -= 150
+						}
 						if j + 3 < 7 && i + 3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j + 3)][uint(i + 3)] && array[j + 3][i + 3] != 3{
 							array[j + 3][i + 3] = 3
-							score += 1000
+							if board.position[uint(j)][uint(i)] == player {
+								finalScore += 10000
+							}else {
+								opScore -= 10000
+							}
 						}
 					}
 				}
-			}
 
-			if board.position[uint(j)][uint(i)].String() == "+" && array[j][i] != 4{
 				if j - 1 >= 0 && i + 1 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j - 1)][uint(i + 1)] && array[j - 1][i + 1] != 4{
 					array[j - 1][i + 1] = 4
 					array[j][i] = 4
-					score += 10
+					if board.position[uint(j)][uint(i)] == player {
+						finalScore += 10
+					}else {
+						opScore -= 10
+					}
 					if j - 2 >= 0 && i + 2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j - 2)][uint(i + 2)] && array[j - 2][i + 2] != 4{
 						array[j - 2][i + 2] = 4
-						score += 5
+						if board.position[uint(j)][uint(i)] == player {
+							finalScore += 150
+						}else {
+							opScore -= 150
+						}
 						if j - 3 >= 0 && i + 3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j - 3)][uint(i + 3)] && array[j - 3][i + 3] != 4{
 							array[j - 3][i + 3] = 4
-							score += 1000
+							if board.position[uint(j)][uint(i)] == player {
+								finalScore += 10000
+							}else {
+								opScore -= 10000
+							}
 						}
 					}
 				}
 			}
 		}
 	}
-	return float32(score)
+	return float32(finalScore + opScore)
 }
 /*
 function return score(takes in the length of the connection and is a returns the number
