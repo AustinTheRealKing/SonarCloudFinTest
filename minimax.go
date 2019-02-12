@@ -1,6 +1,6 @@
 // minimax.go for CSI 380 Assignment 3
 // This file contains a working implementation of Minimax
-// You will need to implement the FindBestMove() methods to 
+// You will need to implement the FindBestMove() methods to
 // actually evaluate a position by running MiniMax on each of the legal
 // moves in a starting position and finding the move associated with the best outcome
 package main
@@ -41,32 +41,26 @@ func MiniMax(board Board, maximizing bool, originalPlayer Piece, depth uint) flo
 // looking up to depth ahead
 // This version looks at each legal move from the starting position
 // concurrently (runs minimax on each legal move concurrently)
-func ConcurrentFindBestMove(board Board, depth uint) Move {
+/*func ConcurrentFindBestMove(board Board, depth uint) Move {
 
 }
-
+*/
 // Find the best possible move in the current position
 // looking up to depth ahead
 // This is a non-concurrent version that you may want to test first
 func FindBestMove(board Board, depth uint) Move {
-	/*
-	For some reason my VS Code isnt working but this should work. Going to test it tomorrow before class
-
-
-	var allPossibleMoves = LegalMoves(Board)
-	var indexOfBestMove = 0;
+	var allPossibleMoves = Board.LegalMoves(board)
+	var indexOfBestMove = 0
 	var bestMove = -math.MaxFloat32
 
-	for(int i = 0; i < len(allPossibleMoves); i++)
-	{
-		miniMaxEval = minimax(board, true, allPossibleMoves[i],depth)
-		if(miniMaxEval > bestMove)
-		{
-			indexOfBestMove = i;
-			bestMove = miniMaxEval;
+	for i := 0; i < len(allPossibleMoves); i++ {
+		miniMaxEval := MiniMax(board, true, board.Turn(), depth)
+		if miniMaxEval > float32(bestMove) {
+			indexOfBestMove = i
+			bestMove = float64(miniMaxEval)
 		}
 	}
 
-	return allPossibleMoves[i];
-	*/
+	return allPossibleMoves[indexOfBestMove]
+
 }
