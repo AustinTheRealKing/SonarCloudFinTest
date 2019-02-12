@@ -70,16 +70,17 @@ func (board C4Board) IsWin() bool {
 						}
 					}
 				}
-				if j + 1 < 7 && i - 1 > 0 && board.position[uint(j)][uint(i)] == board.position[uint(j + 1)][uint(i - 1)]{
-					if j + 2 < 7 && i - 2 > 0 && board.position[uint(j)][uint(i)] == board.position[uint(j + 2)][uint(i - 2)]{
-						if j + 3 < 7 && i - 3 > 0 && board.position[uint(j)][uint(i)] == board.position[uint(j + 3)][uint(i - 3)]{
+				if j + 1 < 7 && i + 1 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j + 1)][uint(i + 1)]{
+					if j + 2 < 7 && i + 2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j + 2)][uint(i + 2)]{
+						if j + 3 < 7 && i + 3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j + 3)][uint(i + 3)]{
 							return true
 						}
 					}
 				}
-				if j - 1 >= 0 && i - 1 >= 0 && board.position[uint(j)][uint(i)] == board.position[uint(j - 1)][uint(i - 1)]{
-					if j - 2 >= 0 && i - 2 >= 0 && board.position[uint(j)][uint(i)] == board.position[uint(j - 2)][uint(i - 2)]{
-						if j - 3 >= 0 && i - 3 >= 0 && board.position[uint(j)][uint(i)] == board.position[uint(j - 3)][uint(i - 3)]{
+
+				if j - 1 >= 0 && i + 1 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j - 1)][uint(i + 1)]{
+					if j - 2 >= 0 && i + 2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j - 2)][uint(i + 2)]{
+						if j - 3 >= 0 && i + 3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j - 3)][uint(i + 3)]{
 							return true
 						}
 					}
@@ -119,18 +120,13 @@ func (board C4Board) IsDraw() bool {
 // for the opponent) as very low scores
 func (board C4Board) Evaluate(player Piece) float32 {
 	var array [7][6]int
-	for i := 0;i < 6; i++{
-		for j := 0;j < 7; j++{
-			array[j][i] = 0
-		}
-	}
 	score := 0
 	for i := 0; i < 6; i++ {
 		for j := 0; j < 7; j++{
 			if board.position[uint(j)][uint(i)].String() == "+" && array[j][i] != 1 {
-				array[j][i] = 1
 				if j + 1 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j + 1)][uint(i)] && array[j + 1][i] != 1 {
 					array[j+1][i] = 1
+					array[j][i] = 1
 					score += 10
 					if j + 2 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j + 2)][uint(i)] && array[j + 2][i] != 1 {
 						array[j+2][i] = 1
@@ -144,15 +140,47 @@ func (board C4Board) Evaluate(player Piece) float32 {
 			}
 
 			if board.position[uint(j)][uint(i)].String() == "+" && array[j][i] != 2 {
-				array[j][i] = 2
-				if j + 1 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 1)] && array[j][i + 1] != 2 {
+				if i + 1 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 1)] && array[j][i + 1] != 2 {
+					array[j][i] = 2
 					array[j][i+1] = 2
 					score += 10
-					if j + 2 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 2)] && array[j][i + 2] != 2 {
+					if i + 2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 2)] && array[j][i + 2] != 2 {
 						array[j][i + 2] = 2
 						score += 5
-						if j + 3 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 3)] && array[j][i + 3] != 2{
+						if i + 3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 3)] && array[j][i + 3] != 2{
 							array[j][i + 3] = 2
+							score += 1000
+						}
+					}
+				}
+			}
+
+			if board.position[uint(j)][uint(i)].String() == "+" && array[j][i] != 3 {
+				if j + 1 < 7 && i + 1 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j + 1)][uint(i + 1)] && array[j + 1][i + 1] != 3{
+					array[j][i] = 3
+					array[j + 1][i + 1] = 3
+					score += 10
+					if j + 2 < 7 && i + 2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j + 2)][uint(i + 2)] && array[j + 2][i + 2] != 3{
+						array[j + 2][i + 2] = 3
+						score += 5
+						if j + 3 < 7 && i + 3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j + 3)][uint(i + 3)] && array[j + 3][i + 3] != 3{
+							array[j + 3][i + 3] = 3
+							score += 1000
+						}
+					}
+				}
+			}
+
+			if board.position[uint(j)][uint(i)].String() == "+" && array[j][i] != 4{
+				if j - 1 >= 0 && i + 1 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j - 1)][uint(i + 1)] && array[j - 1][i + 1] != 4{
+					array[j - 1][i + 1] = 4
+					array[j][i] = 4
+					score += 10
+					if j - 2 >= 0 && i + 2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j - 2)][uint(i + 2)] && array[j - 2][i + 2] != 4{
+						array[j - 2][i + 2] = 4
+						score += 5
+						if j - 3 >= 0 && i + 3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j - 3)][uint(i + 3)] && array[j - 3][i + 3] != 4{
+							array[j - 3][i + 3] = 4
 							score += 1000
 						}
 					}
@@ -161,48 +189,6 @@ func (board C4Board) Evaluate(player Piece) float32 {
 		}
 	}
 	return float32(score)
-	// YOUR CODE HERE
-
-	//LOGIC FOR EVALUATE
-	/*
-	1 Filled = 5
-	2 Filled = 10
-	3 Filled = 25
-	4 Filled = 1000
-
-	So we need to find a way to evalute the entire board for a player, and add up a score to evaluate the entire board
-
-	Problems we need to look out for:
-	Counting the same segment twice
-	Starting on the left side of the board and just moving right
-
-	How do we check for moves in the vacinity
-	Idea: Have a function called check Vacinity to see the pieces around a given piece, will only move to the right and up/down
-
-	PROTOTYPE:
-	int score = 0
-	for int i = 0-4
-		int lengthOfConnection = 1
-			if(0)
-				Checks a piece for horizontal matches
-				if(Player1Piece == SpaceToRight)
-					lengthOfConnection++
-					if(Player1Piece == PieceTwoSpotsToRight
-					length of Connection++
-					if(Player1Piece == PieceThreeSpotsToRight
-					lengthOfConnection
-
-			if 1
-				Checks for vertical matches
-				For vertical check above and below and add them together
-			if 2
-				Checks for Upward Diagonal
-			if 3
-				Checks for Downwards Diagonal
-
-	return score
-
-	 */
 }
 /*
 function return score(takes in the length of the connection and is a returns the number
