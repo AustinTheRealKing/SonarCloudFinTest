@@ -49,5 +49,24 @@ func ConcurrentFindBestMove(board Board, depth uint) Move {
 // looking up to depth ahead
 // This is a non-concurrent version that you may want to test first
 func FindBestMove(board Board, depth uint) Move {
+	/*
+	For some reason my VS Code isnt working but this should work. Going to test it tomorrow before class
 
+
+	var allPossibleMoves = LegalMoves(Board)
+	var indexOfBestMove = 0;
+	var bestMove = -math.MaxFloat32
+
+	for(int i = 0; i < len(allPossibleMoves); i++)
+	{
+		miniMaxEval = minimax(board, true, allPossibleMoves[i],depth)
+		if(miniMaxEval > bestMove)
+		{
+			indexOfBestMove = i;
+			bestMove = miniMaxEval;
+		}
+	}
+
+	return allPossibleMoves[i];
+	*/
 }
