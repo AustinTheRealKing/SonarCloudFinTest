@@ -118,6 +118,49 @@ func (board C4Board) IsDraw() bool {
 // You may also need to score wins (4 filleds) as very high scores and losses (4 filleds
 // for the opponent) as very low scores
 func (board C4Board) Evaluate(player Piece) float32 {
+	var array [7][6]int
+	for i := 0;i < 6; i++{
+		for j := 0;j < 7; j++{
+			array[j][i] = 0
+		}
+	}
+	score := 0
+	for i := 0; i < 6; i++ {
+		for j := 0; j < 7; j++{
+			if board.position[uint(j)][uint(i)].String() == "+" && array[j][i] != 1 {
+				array[j][i] = 1
+				if j + 1 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j + 1)][uint(i)] && array[j + 1][i] != 1 {
+					array[j+1][i] = 1
+					score += 10
+					if j + 2 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j + 2)][uint(i)] && array[j + 2][i] != 1 {
+						array[j+2][i] = 1
+						score += 5
+						if j + 3 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j + 3)][uint(i)] && array[j + 3][i] != 1{
+							array[j+3][i] = 1
+							score += 1000
+						}
+					}
+				}
+			}
+
+			if board.position[uint(j)][uint(i)].String() == "+" && array[j][i] != 2 {
+				array[j][i] = 2
+				if j + 1 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 1)] && array[j][i + 1] != 2 {
+					array[j][i+1] = 2
+					score += 10
+					if j + 2 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 2)] && array[j][i + 2] != 2 {
+						array[j][i + 2] = 2
+						score += 5
+						if j + 3 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i + 3)] && array[j][i + 3] != 2{
+							array[j][i + 3] = 2
+							score += 1000
+						}
+					}
+				}
+			}
+		}
+	}
+	return float32(score)
 	// YOUR CODE HERE
 
 	//LOGIC FOR EVALUATE
