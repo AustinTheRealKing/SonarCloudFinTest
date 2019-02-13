@@ -32,5 +32,42 @@ func getPlayerMove() Move {
 
 // Main game loop
 func main() {
-	// YOUR CODE HERE
+	/*
+	HAHAHAHAHA I LOVE NOT HAVING GO WORK ON MY DESKTOP AND I HAVE TO BE ON DUTY
+
+	Board gameBoard = new Board();
+	Move tempMove;
+	 
+	for i = 0; true; i++
+	{
+		fmt.Print(gameBoard.String())
+		
+		if(i%2 == 0) //PlayersMove
+		{
+			tempMove = getPlayerMove()
+			gameBoard = gameBoard.MakeMove(tempMove)
+			if(gameBoard.isWin())
+			{
+				fmt.Print("You won!")
+				break;
+			}
+		} else {
+
+			tempMove = FindBestMove(gameBoard, 3)
+			gameBoard = gameBoard.MakeMove(tempMove)
+			if(gameBoard.isWin())
+			{
+				fmt.Print("You lost!")
+				break;
+			}
+		}
+
+		if(gameBoard.isDraw())
+		{
+			fmt.Print("Its a draw!")
+			break;
+		} 
+	}
+}
+	*/
 }
