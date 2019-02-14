@@ -48,6 +48,7 @@ func main() {
 			tempMove = FindBestMove(gameBoard, 3)
 			fmt.Println("OPPONENT TURN!", gameBoard.Turn())
 			gameBoard = gameBoard.MakeMove(tempMove)
+
 			if gameBoard.IsWin() {
 				fmt.Println("You lost!")
 				break
@@ -59,4 +60,5 @@ func main() {
 		}
 	}
 	fmt.Println(gameBoard.String())
+
 }

@@ -37,6 +37,7 @@ func (board C4Board) MakeMove(col Move) Board {
 	temp := board
 	temp.position[col][temp.colCount[col]] = board.Turn()
 	temp.colCount[col]++
+	temp.turn = temp.turn.opposite()
 	return temp
 }
 
@@ -102,7 +103,6 @@ func (board C4Board) IsDraw() bool {
 	} else {
 		return true
 	}
-	return true
 }
 
 // Who is winning in this position?
@@ -249,6 +249,5 @@ func (board C4Board) String() string {
 	}
 
 	finalString += "\n\n\n"
-	board.turn = board.turn.opposite()
 	return finalString
 }
