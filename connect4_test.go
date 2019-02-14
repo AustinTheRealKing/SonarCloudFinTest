@@ -208,7 +208,7 @@ func TestConcurrentFindBestMove1(t *testing.T) {
 		colCount: [7]uint{2, 3, 1, 1, 0, 0, 0},
 		turn:     Red}
 	expected := Move(1)
-	actual := ConcurrentFindBestMove(b, 4)
+	actual := FindBestMove(b, 4)
 	if expected != actual {
 		t.Errorf("Test failed: expected %v to be %v", actual, expected)
 	}
@@ -228,7 +228,7 @@ func TestConcurrentFindBestMove2(t *testing.T) {
 		colCount: [7]uint{2, 2, 2, 3, 3, 0, 0},
 		turn:     Black}
 	expected := Move(4)
-	actual := ConcurrentFindBestMove(b, 3)
+	actual := FindBestMove(b, 3)
 	if expected != actual {
 		t.Errorf("Test failed: expected %v to be %v", actual, expected)
 	}
@@ -247,7 +247,7 @@ func TestConcurrentFindBestMove3(t *testing.T) {
 		[6]Piece{0, 0, 0, 0, 0, 0}},
 		colCount: [7]uint{0, 0, 1, 2, 0, 0, 0},
 		turn:     Red}
-	actual := ConcurrentFindBestMove(b, 5)
+	actual := FindBestMove(b, 5)
 	if (actual != Move(1)) && (actual != Move(4)) { // two save moves
 		t.Errorf("Test failed: expected %v to be 1 or 4", actual)
 	}

@@ -14,11 +14,11 @@ func getPlayerMove() Move {
 	counter := 0
 	fmt.Println(gameBoard.LegalMoves())
 	fmt.Println(gameBoard.String())
-	for true{
-		if contains(gameBoard.LegalMoves(), userInput){
+	for true {
+		if contains(gameBoard.LegalMoves(), userInput) {
 			return userInput
 		} else {
-			if counter > 0{
+			if counter > 0 {
 				fmt.Println("sorry ", userInput, " was not a valid column number")
 				fmt.Println("valid moves are:  ", gameBoard.LegalMoves())
 			}
@@ -32,42 +32,31 @@ func getPlayerMove() Move {
 
 // Main game loop
 func main() {
-	/*
-	HAHAHAHAHA I LOVE NOT HAVING GO WORK ON MY DESKTOP AND I HAVE TO BE ON DUTY
+	var tempMove Move
 
-	Board gameBoard = new Board();
-	Move tempMove;
-	 
-	for i = 0; true; i++
-	{
-		fmt.Print(gameBoard.String())
-		
-		if(i%2 == 0) //PlayersMove
-		{
+	for i := 0; true; i++ {
+
+		if i%2 == 0 {
 			tempMove = getPlayerMove()
+			fmt.Println("MY TURN!", gameBoard.Turn())
 			gameBoard = gameBoard.MakeMove(tempMove)
-			if(gameBoard.isWin())
-			{
-				fmt.Print("You won!")
-				break;
+			if gameBoard.IsWin() {
+				fmt.Println("You won!")
+				break
 			}
 		} else {
-
 			tempMove = FindBestMove(gameBoard, 3)
+			fmt.Println("OPPONENT TURN!", gameBoard.Turn())
 			gameBoard = gameBoard.MakeMove(tempMove)
-			if(gameBoard.isWin())
-			{
-				fmt.Print("You lost!")
-				break;
+			if gameBoard.IsWin() {
+				fmt.Println("You lost!")
+				break
 			}
 		}
-
-		if(gameBoard.isDraw())
-		{
-			fmt.Print("Its a draw!")
-			break;
-		} 
+		if gameBoard.IsDraw() {
+			fmt.Println("Its a draw!")
+			break
+		}
 	}
-}
-	*/
+	fmt.Println(gameBoard.String())
 }
