@@ -123,27 +123,37 @@ func (board C4Board) Evaluate(player Piece) float32 {
 	var array [7][6]int
 	finalScore := 0
 	opScore := 0
+	
+	/*
+	if user has 2 pieces connected diagonal, horizontal, or vertical add 10 points to score(5 points/connected piece)
+	if user has 3 pieces connected diagonal, horizontal, or vertical add 150 points to score
+	if user has 4 pieces connected diagonal, horizontal, or vertical add 10000 points to score
+	subtract same point values if the opponent achieves one of the states outlined above
+	*/
 	for i := 0; i < 6; i++ {
 		for j := 0; j < 7; j++ {
 			if board.position[uint(j)][uint(i)].String() != " " {
 				//evaluate horizontal
+				// if the current board position is equal to the position one column over
 				if j+1 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j+1)][uint(i)] && array[j+1][i] != 1 {
-					array[j+1][i] = 1
-					array[j][i] = 1
+					array[j+1][i] = 1 //set visited values as visited (1) int array so evaluations aren't duplicated
+					array[j][i] = 1 //set visited values as visited (1) int array so evaluations aren't duplicated
 					if board.position[uint(j)][uint(i)] == player {
 						finalScore += 10
 					} else {
 						opScore -= 10
 					}
+					// if the current board position is equal to the position two columns over
 					if j+2 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j+2)][uint(i)] && array[j+2][i] != 1 {
-						array[j+2][i] = 1
+						array[j+2][i] = 1 //set visited values as visited (1) int array so evaluations aren't duplicated
 						if board.position[uint(j)][uint(i)] == player {
 							finalScore += 150
 						} else {
 							opScore -= 150
 						}
+						// if the current board position is equal to the position three columns over
 						if j+3 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j+3)][uint(i)] && array[j+3][i] != 1 {
-							array[j+3][i] = 1
+							array[j+3][i] = 1 //set visited values as visited (1) int array so evaluations aren't duplicated
 							if board.position[uint(j)][uint(i)] == player {
 								finalScore += 10000
 							} else {
@@ -152,23 +162,27 @@ func (board C4Board) Evaluate(player Piece) float32 {
 						}
 					}
 				}
+				//evaluate vertical
+				// if the current board position is equal to the position one row up
 				if i+1 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i+1)] && array[j][i+1] != 2 {
-					array[j][i] = 2
-					array[j][i+1] = 2
+					array[j][i] = 2 //set visited values as visited (2) int array so evaluations aren't duplicated
+					array[j][i+1] = 2 //set visited values as visited (2) int array so evaluations aren't duplicated
 					if board.position[uint(j)][uint(i)] == player {
 						finalScore += 10
 					} else {
 						opScore -= 10
 					}
+					// if the current board position is equal to the position two rows up
 					if i+2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i+2)] && array[j][i+2] != 2 {
-						array[j][i+2] = 2
+						array[j][i+2] = 2 //set visited values as visited (2) int array so evaluations aren't duplicated
 						if board.position[uint(j)][uint(i)] == player {
 							finalScore += 150
 						} else {
 							opScore -= 150
 						}
+						// if the current board position is equal to the position three rows up
 						if i+3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i+3)] && array[j][i+3] != 2 {
-							array[j][i+3] = 2
+							array[j][i+3] = 2 //set visited values as visited (2) int array so evaluations aren't duplicated
 							if board.position[uint(j)][uint(i)] == player {
 								finalScore += 10000
 							} else {
@@ -177,24 +191,27 @@ func (board C4Board) Evaluate(player Piece) float32 {
 						}
 					}
 				}
-
+				//evaluate up to the right
+				// if the current board position is equal to the position one row up and one column over to the right
 				if j+1 < 7 && i+1 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j+1)][uint(i+1)] && array[j+1][i+1] != 3 {
-					array[j][i] = 3
-					array[j+1][i+1] = 3
+					array[j][i] = 3 //set visited values as visited (3) int array so evaluations aren't duplicated
+					array[j+1][i+1] = 3 //set visited values as visited (3) int array so evaluations aren't duplicated
 					if board.position[uint(j)][uint(i)] == player {
 						finalScore += 10
 					} else {
 						opScore -= 10
 					}
+					// if the current board position is equal to the position two rows up and two columns over to the right
 					if j+2 < 7 && i+2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j+2)][uint(i+2)] && array[j+2][i+2] != 3 {
-						array[j+2][i+2] = 3
+						array[j+2][i+2] = 3 //set visited values as visited (3) int array so evaluations aren't duplicated
 						if board.position[uint(j)][uint(i)] == player {
 							finalScore += 150
 						} else {
 							opScore -= 150
 						}
+						// if the current board position is equal to the position three rows up and three columns over to the right
 						if j+3 < 7 && i+3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j+3)][uint(i+3)] && array[j+3][i+3] != 3 {
-							array[j+3][i+3] = 3
+							array[j+3][i+3] = 3 //set visited values as visited (3) int array so evaluations aren't duplicated
 							if board.position[uint(j)][uint(i)] == player {
 								finalScore += 10000
 							} else {
@@ -203,7 +220,8 @@ func (board C4Board) Evaluate(player Piece) float32 {
 						}
 					}
 				}
-
+				//evaluate up to the left (diagonal)
+				// if the current board position is equal to the position one row up and one column over to the left
 				if j-1 >= 0 && i+1 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j-1)][uint(i+1)] && array[j-1][i+1] != 4 {
 					array[j-1][i+1] = 4
 					array[j][i] = 4
@@ -212,6 +230,7 @@ func (board C4Board) Evaluate(player Piece) float32 {
 					} else {
 						opScore -= 10
 					}
+					// if the current board position is equal to the position two rows up and two columns over to the left
 					if j-2 >= 0 && i+2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j-2)][uint(i+2)] && array[j-2][i+2] != 4 {
 						array[j-2][i+2] = 4
 						if board.position[uint(j)][uint(i)] == player {
@@ -219,6 +238,7 @@ func (board C4Board) Evaluate(player Piece) float32 {
 						} else {
 							opScore -= 150
 						}
+						// if the current board position is equal to the position three rows up and three columns over to the left
 						if j-3 >= 0 && i+3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j-3)][uint(i+3)] && array[j-3][i+3] != 4 {
 							array[j-3][i+3] = 4
 							if board.position[uint(j)][uint(i)] == player {
