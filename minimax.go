@@ -54,7 +54,7 @@ func FindBestMove(board Board, depth uint) Move {
 	var bestMove = -math.MaxFloat32
 
 	for i := 0; i < len(allPossibleMoves); i++ {
-		miniMaxEval := MiniMax(board, true, board.Turn(), depth)
+		miniMaxEval := MiniMax(board.MakeMove(allPossibleMoves[i]), true, board.Turn(), depth)
 		if miniMaxEval > float32(bestMove) {
 			indexOfBestMove = i
 			bestMove = float64(miniMaxEval)
