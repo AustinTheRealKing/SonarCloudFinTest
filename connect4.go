@@ -105,14 +105,13 @@ func (board C4Board) IsDraw() bool {
 	}
 }
 
-
-func (board C4Board) countNumPieces(col int, row int, numInSeg int, opScore int, player Piece, opPlayer string) (int, int){
+func (board C4Board) countNumPieces(col int, row int, numInSeg int, opponentPiecesinSeg int, player Piece) (int, int) {
 	if board.position[uint(col)][uint(row)] == player {
 		numInSeg++
-	} else if board.position[uint(col)][uint(row)].String() == opPlayer {
-		opScore++
+	} else if board.position[uint(col)][uint(row)] == player.opposite() {
+		opponentPiecesinSeg++
 	}
-	return numInSeg, opScore
+	return numInSeg, opponentPiecesinSeg
 }
 
 func (board C4Board) scoreSeg(numInSeg int) int {
@@ -120,15 +119,16 @@ func (board C4Board) scoreSeg(numInSeg int) int {
 	finalScore := 0
 	if numInSeg == 1 {
 		finalScore += 5
-	}else if numInSeg == 2 {
+	} else if numInSeg == 2 {
 		finalScore += 20
-	}else if numInSeg == 3 {
-		finalScore += 150
-	} else if numInSeg == 4{
+	} else if numInSeg == 3 {
 		finalScore += 1500
+	} else if numInSeg == 4 {
+		finalScore += 150000
 	}
 	return finalScore
 }
+
 // Who is winning in this position?
 // This function scores the position for player
 // and returns a numerical score
@@ -145,38 +145,34 @@ func (board C4Board) scoreSeg(numInSeg int) int {
 // for the opponent) as very low scores
 func (board C4Board) Evaluate(player Piece) float32 {
 	numInSeg := 0
-	opScore := 0
-	finalScore:=0
-	var opPlayer string = ""
-	if player.String() == "+" {
-		opPlayer = "*"
-	}else {
-		opPlayer = "+"
-	}
+	opponentPiecesinSeg := 0
+	finalScore := 0
 	for i := 0; i < 6; i++ {
 		for k := 0; k < 4; k++ {
-			for j := 0; j < 4; j++{
-				numInSeg, opScore = board.countNumPieces(k + j, i, numInSeg, opScore, player, opPlayer)
-				if j == 3{
-					if opScore != 0{
+			for j := 0; j < 4; j++ {
+				numInSeg, opponentPiecesinSeg = board.countNumPieces(k+j, i, numInSeg, opponentPiecesinSeg, player)
+				if j == 3 {
+					if opponentPiecesinSeg != 0 {
 						numInSeg = 0
-					}else {
+						finalScore -= board.scoreSeg(opponentPiecesinSeg)
+					} else {
 						finalScore += board.scoreSeg(numInSeg)
 					}
-					opScore = 0
+					opponentPiecesinSeg = 0
 					numInSeg = 0
 				}
 			}
-			if i < 3{
-				for j := 0; j < 4; j++{
-					numInSeg, opScore = board.countNumPieces(k + j, i + j, numInSeg, opScore, player, opPlayer)
-					if j == 3{
-						if opScore != 0{
+			if i < 3 {
+				for j := 0; j < 4; j++ {
+					numInSeg, opponentPiecesinSeg = board.countNumPieces(k+j, i+j, numInSeg, opponentPiecesinSeg, player)
+					if j == 3 {
+						if opponentPiecesinSeg != 0 {
 							numInSeg = 0
-						}else {
+							finalScore -= board.scoreSeg(opponentPiecesinSeg)
+						} else {
 							finalScore += board.scoreSeg(numInSeg)
 						}
-						opScore = 0
+						opponentPiecesinSeg = 0
 						numInSeg = 0
 					}
 				}
@@ -185,38 +181,39 @@ func (board C4Board) Evaluate(player Piece) float32 {
 	}
 	for i := 0; i < 3; i++ {
 		for k := 0; k < 7; k++ {
-			for j := 0; j < 4; j++{
-				numInSeg, opScore = board.countNumPieces(k, i + j, numInSeg, opScore, player, opPlayer)
-				if j == 3{
-					if opScore != 0{
+			for j := 0; j < 4; j++ {
+				numInSeg, opponentPiecesinSeg = board.countNumPieces(k, i+j, numInSeg, opponentPiecesinSeg, player)
+				if j == 3 {
+					if opponentPiecesinSeg != 0 {
 						numInSeg = 0
-					}else {
+						finalScore -= board.scoreSeg(opponentPiecesinSeg)
+					} else {
 						finalScore += board.scoreSeg(numInSeg)
 					}
-					opScore = 0
+					opponentPiecesinSeg = 0
 					numInSeg = 0
 				}
 			}
 		}
-		for k := 3;k < 7; k++{
-			for j := 0; j < 4; j++{
-				numInSeg, opScore = board.countNumPieces(k - j, i + j, numInSeg, opScore, player, opPlayer)
-				if j == 3{
-					if opScore != 0{
+		for k := 3; k < 7; k++ {
+			for j := 0; j < 4; j++ {
+				numInSeg, opponentPiecesinSeg = board.countNumPieces(k-j, i+j, numInSeg, opponentPiecesinSeg, player)
+				if j == 3 {
+					if opponentPiecesinSeg != 0 {
 						numInSeg = 0
-					}else {
+						finalScore -= board.scoreSeg(opponentPiecesinSeg)
+					} else {
 						finalScore += board.scoreSeg(numInSeg)
 					}
-					opScore = 0
+					opponentPiecesinSeg = 0
 					numInSeg = 0
 				}
 			}
 		}
 	}
 
-	return float32(numInSeg)
+	return float32(finalScore)
 }
-
 
 // Nice to print board representation
 // This will be used in play.go to print out the state of the position

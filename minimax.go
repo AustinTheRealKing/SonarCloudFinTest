@@ -5,7 +5,10 @@
 // moves in a starting position and finding the move associated with the best outcome
 package main
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 // Find the best possible outcome evaluation for originalPlayer
 // depth is initially the maximum depth
@@ -54,7 +57,8 @@ func FindBestMove(board Board, depth uint) Move {
 	var bestMove = -math.MaxFloat32
 
 	for i := 0; i < len(allPossibleMoves); i++ {
-		miniMaxEval := MiniMax(board.MakeMove(allPossibleMoves[i]), true, board.Turn(), depth)
+		miniMaxEval := MiniMax(board.MakeMove(allPossibleMoves[i]), false, board.Turn(), depth)
+		fmt.Println("Minimax Eval: ", miniMaxEval)
 		if miniMaxEval > float32(bestMove) {
 			indexOfBestMove = i
 			bestMove = float64(miniMaxEval)
