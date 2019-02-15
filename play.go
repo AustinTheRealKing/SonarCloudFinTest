@@ -33,7 +33,6 @@ func getPlayerMove() Move {
 // Main game loop
 func main() {
 	var tempMove Move
-
 	for i := 0; true; i++ {
 
 		if i%2 == 0 {
@@ -45,7 +44,8 @@ func main() {
 				break
 			}
 		} else {
-			tempMove = FindBestMove(gameBoard, 3)
+
+			tempMove = ConcurrentFindBestMove(gameBoard, 3)
 			fmt.Println("OPPONENT TURN!", gameBoard.Turn())
 			gameBoard = gameBoard.MakeMove(tempMove)
 
@@ -60,5 +60,6 @@ func main() {
 		}
 	}
 	fmt.Println(gameBoard.String())
+	print()
 
 }
