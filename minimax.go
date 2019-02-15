@@ -85,35 +85,6 @@ func ConcurrentFindBestMove(board Board, depth uint) Move {
 	}
 	return sliceOfMoves[index].move
 
-	/*
-		var allPossibleMoves = board.LegalMoves()
-		var bestMoveEval float32 = -math.MaxFloat32
-		var bestMove Move
-
-		channel := make(chan MoveAndEval)
-
-		concurrentRun := func(board Board, move Move, channel chan MoveAndEval) {
-			miniMaxEval := MiniMax(board, false, board.Turn(), depth)
-			conncurentEval := MoveAndEval{move: move, eval: miniMaxEval}
-			channel <- conncurentEval
-		}
-
-		for i := 0; i < len(allPossibleMoves); i++ {
-			go concurrentRun(board.MakeMove(allPossibleMoves[i]), allPossibleMoves[i], channel)
-		}
-
-		for i := 0; i < len(allPossibleMoves); i++ {
-			moveReturned := <-channel
-			if moveReturned.eval > bestMoveEval {
-				bestMoveEval = moveReturned.eval
-				bestMove = moveReturned.move
-
-			}
-		}
-		fmt.Println(bestMove)
-		return bestMove
-	*/
-
 }
 
 // Find the best possible move in the current position

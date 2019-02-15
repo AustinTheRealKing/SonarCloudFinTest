@@ -55,8 +55,10 @@ func (board C4Board) LegalMoves() []Move {
 
 // Is it a win?
 func (board C4Board) IsWin() bool {
+	// Two dimnesionally goes through the array searching for wins
 	for i := 0; i < 6; i++ {
 		for j := 0; j < 7; j++ {
+			//Checks for Vertical Wins
 			if i+1 < 6 && board.position[uint(j)][uint(i)].String() != " " && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i+1)] {
 				if i+2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i+2)] {
 					if i+3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j)][uint(i+3)] {
@@ -64,6 +66,7 @@ func (board C4Board) IsWin() bool {
 					}
 				}
 			}
+			//Checks for Horizontal Wins
 			if j+1 < 7 && board.position[uint(j)][uint(i)].String() != " " && board.position[uint(j)][uint(i)] == board.position[uint(j+1)][uint(i)] {
 				if j+2 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j+2)][uint(i)] {
 					if j+3 < 7 && board.position[uint(j)][uint(i)] == board.position[uint(j+3)][uint(i)] {
@@ -71,6 +74,7 @@ func (board C4Board) IsWin() bool {
 					}
 				}
 			}
+			//Checks for Up to the Right Diagonal Wins
 			if j+1 < 7 && i+1 < 6 && board.position[uint(j)][uint(i)].String() != " " && board.position[uint(j)][uint(i)] == board.position[uint(j+1)][uint(i+1)] {
 				if j+2 < 7 && i+2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j+2)][uint(i+2)] {
 					if j+3 < 7 && i+3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j+3)][uint(i+3)] {
@@ -78,7 +82,7 @@ func (board C4Board) IsWin() bool {
 					}
 				}
 			}
-
+			//Checks for down to the left Diagonal Wins
 			if j-1 >= 0 && i+1 < 6 && board.position[uint(j)][uint(i)].String() != " " && board.position[uint(j)][uint(i)] == board.position[uint(j-1)][uint(i+1)] {
 				if j-2 >= 0 && i+2 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j-2)][uint(i+2)] {
 					if j-3 >= 0 && i+3 < 6 && board.position[uint(j)][uint(i)] == board.position[uint(j-3)][uint(i+3)] {
@@ -93,11 +97,13 @@ func (board C4Board) IsWin() bool {
 
 // Is it a draw?
 func (board C4Board) IsDraw() bool {
+	//Checks to see if each Column is full
 	for i := 0; i < len(board.colCount); i++ {
 		if board.colCount[i] != 6 {
 			return false
 		}
 	}
+	//If the board is full and there isn't a win, then it is a draw
 	if board.IsWin() {
 		return false
 	} else {
@@ -105,6 +111,7 @@ func (board C4Board) IsDraw() bool {
 	}
 }
 
+//A segment is passed to CountNumPieces and the number of Pieces in the segment is returned
 func (board C4Board) countNumPieces(col int, row int, numInSeg int, opponentPiecesinSeg int, player Piece) (int, int) {
 	if board.position[uint(col)][uint(row)] == player {
 		numInSeg++
@@ -115,7 +122,7 @@ func (board C4Board) countNumPieces(col int, row int, numInSeg int, opponentPiec
 }
 
 func (board C4Board) scoreSeg(numInSeg int) int {
-	//turn into function
+	//Based on the number of pieces in a function it returns the score
 	finalScore := 0
 	if numInSeg == 1 {
 		finalScore += 5
@@ -149,8 +156,10 @@ func (board C4Board) Evaluate(player Piece) float32 {
 	finalScore := 0
 	for i := 0; i < 6; i++ {
 		for k := 0; k < 4; k++ {
+			//The third for loop is to traverse segments, checks Horizontal Segments
 			for j := 0; j < 4; j++ {
 				numInSeg, opponentPiecesinSeg = board.countNumPieces(k+j, i, numInSeg, opponentPiecesinSeg, player)
+				//end of segment, start assigning scores to segment
 				if j == 3 {
 					if opponentPiecesinSeg != 0 {
 						numInSeg = 0
@@ -162,6 +171,7 @@ func (board C4Board) Evaluate(player Piece) float32 {
 					numInSeg = 0
 				}
 			}
+			//start checking up to right diagonal
 			if i < 3 {
 				for j := 0; j < 4; j++ {
 					numInSeg, opponentPiecesinSeg = board.countNumPieces(k+j, i+j, numInSeg, opponentPiecesinSeg, player)
@@ -179,8 +189,10 @@ func (board C4Board) Evaluate(player Piece) float32 {
 			}
 		}
 	}
+
 	for i := 0; i < 3; i++ {
 		for k := 0; k < 7; k++ {
+			//start checking vertical
 			for j := 0; j < 4; j++ {
 				numInSeg, opponentPiecesinSeg = board.countNumPieces(k, i+j, numInSeg, opponentPiecesinSeg, player)
 				if j == 3 {
@@ -196,6 +208,7 @@ func (board C4Board) Evaluate(player Piece) float32 {
 			}
 		}
 		for k := 3; k < 7; k++ {
+			//start checking up to the left
 			for j := 0; j < 4; j++ {
 				numInSeg, opponentPiecesinSeg = board.countNumPieces(k-j, i+j, numInSeg, opponentPiecesinSeg, player)
 				if j == 3 {
